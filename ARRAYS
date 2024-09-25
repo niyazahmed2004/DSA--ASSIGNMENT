@@ -1,0 +1,109 @@
+#include <stdio.h>
+#include <string.h>
+
+void createList(char students[][50], int *count) {
+    int n;
+    printf("Enter the number of students: ");
+    scanf("%d", &n);
+    
+    for (int i = 0; i < n; i++) {
+        printf("Enter student name %d: ", i + 1);
+        scanf("%s", students[*count]);
+        (*count)++;
+    }
+}
+
+void insertStudent(char students[][50], int *count) {
+    char new_student[50];
+    int pos;
+    
+    printf("Enter new student name: ");
+    scanf("%s", new_student);
+    
+    printf("Enter position to insert: ");
+    scanf("%d", &pos);
+    
+    for (int i = *count; i > pos; i--) {
+        strcpy(students[i], students[i - 1]);
+    }
+    strcpy(students[pos], new_student);
+    (*count)++;
+}
+
+void deleteStudent(char students[][50], int *count) {
+    int choice;
+    printf("Delete by: 1. Index 2. Name: ");
+    scanf("%d", &choice);
+    
+    if (choice == 1) {
+        int index;
+        printf("Enter index to delete: ");
+        scanf("%d", &index);
+        for (int i = index; i < *count - 1; i++) {
+            strcpy(students[i], students[i + 1]);
+        }
+        (*count)--;
+    } else {
+        char name[50];
+        printf("Enter student name to delete: ");
+        scanf("%s", name);
+        
+        for (int i = 0; i < *count; i++) {
+            if (strcmp(students[i], name) == 0) {
+                for (int j = i; j < *count - 1; j++) {
+                    strcpy(students[j], students[j + 1]);
+                }
+                (*count)--;
+                break;
+            }
+        }
+    }
+}
+
+void displayList(char students[][50], int count) {
+    for (int i = 0; i < count; i++) {
+        printf("%d. %s\n", i + 1, students[i]);
+    }
+}
+
+void searchStudent(char students[][50], int count) {
+    char name[50];
+    printf("Enter student name to search: ");
+    scanf("%s", name);
+    
+    for (int i = 0; i < count; i++) {
+        if (strcmp(students[i], name) == 0) {
+            printf("Student found at position %d\n", i + 1);
+            return;
+        }
+    }
+    printf("Student not found\n");
+}
+
+int main() {
+    char students[MAX][50]; 
+    int count = 0;
+    int choice;
+    
+    do {
+        printf("\n1. Create the list of students\n");
+        printf("2. Insert a new student\n");
+        printf("3. Delete a student\n");
+        printf("4. Display student list\n");
+        printf("5. Search for a student\n");
+        printf("6. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        
+        if (choice == 1) createList(students, &count);
+        else if (choice == 2) insertStudent(students, &count);
+        else if (choice == 3) deleteStudent(students, &count);
+        else if (choice == 4) displayList(students, count);
+        else if (choice == 5) searchStudent(students, count);
+        else if (choice == 6) printf("Exiting...\n");
+        else printf("Invalid choice\n");
+        
+    } while (choice != 6);
+    
+    return 0;
+}
