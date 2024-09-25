@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int m, n, p, q;
+    int i, j, k;
+    int **matrix1, **matrix2, **result;
+
+    printf("Enter rows and columns for first matrix (e.g., 2,3): ");
+    scanf("%d,%d", &m, &n);
+
+    printf("Enter rows and columns for second matrix (e.g., 3,2): ");
+    scanf("%d,%d", &p, &q);
+
+    if (n != p) {
+        printf("Matrix multiplication not possible, column of first matrix must equal row of second matrix.\n");
+        return 0;
+    }
+
+    matrix1 = (int **)malloc(m * sizeof(int *));
+    matrix2 = (int **)malloc(p * sizeof(int *));
+    result = (int **)malloc(m * sizeof(int *));
+
+    for (i = 0; i < m; i++) {
+        matrix1[i] = (int *)malloc(n * sizeof(int));
+    }
+    for (i = 0; i < p; i++) {
+        matrix2[i] = (int *)malloc(q * sizeof(int));
+    }
+    for (i = 0; i < m; i++) {
+        result[i] = (int *)malloc(q * sizeof(int));
+    }
+
+    printf("Enter elements of first matrix:\n");
+    for (i = 0; i < m; i++) {
+        for (j = 0; j < n; j++) {
+            printf("Enter element [%d][%d]: ", i + 1, j + 1);
+            scanf("%d", &matrix1[i][j]);
+        }
+    }
+
+    printf("Enter elements of second matrix:\n");
+    for (i = 0; i < p; i++) {
+        for (j = 0; j < q; j++) {
+            printf("Enter element [%d][%d]: ", i + 1, j + 1);
+            scanf("%d", &matrix2[i][j]);
+        }
+    }
+
+    for (i = 0; i < m; i++) {
+        for (j = 0; j < q; j++) {
+            result[i][j] = 0;
+            for (k = 0; k < n; k++) {
+                result[i][j] += matrix1[i][k] * matrix2[k][j];
+            }
+        }
+    }
+
+    printf("Result matrix:\n");
+    for (i = 0; i < m; i++) {
+        for (j = 0; j < q; j++) {
+            printf("%d ", result[i][j]);
+        }
+        printf("\n");
+    }
+
+    for (i = 0; i < m; i++) {
+        free(matrix1[i]);
+    }
+    for (i = 0; i < p; i++) {
+        free(matrix2[i]);
+    }
+    for (i = 0; i < m; i++) {
+        free(result[i]);
+    }
+    free(matrix1);
+    free(matrix2);
+    free(result);
+
+    return 0;
+}
